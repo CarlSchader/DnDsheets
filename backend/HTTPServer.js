@@ -22,7 +22,9 @@ const attributeSet = new Set(["character_name", "class", "level", "background", 
    	"personality_traits", "ideals", "bonds", "flaws", "attacks_and_spellcasting", "other_proficiencies_and_languages", "equipment", "features_and_traits"
 ]);
 
-const attrbuteSetString = "character_name, class, level, background, player_name, race, alignment, strength, dexterity, constitution, intelligence, wisdom, charisma, inspiration, proficiency_bonus, passive_wisdom, saving_throw_strength, saving_throw_dexterity, saving_throw_constitution, saving_throw_intelligence, saving_throw_wisdom, saving_throw_charisma, acrobatics, animal_handling, arcana, athletics, deception, history, insight, intimidation, investigation, medicine, nature, perception, performance, persuasion, religion, sleight_of_hand, stealth, survival, armour_class, initiative, speed, hit_points, CP, SP, EP, GP, PP, personality_traits, ideals, bonds, flaws, attacks_and_spellcasting, other_proficiencies_and_languages, equipment, features_and_traits"
+const attrbuteSetString = "character_name, class, level, background, player_name, race, alignment, strength, dexterity, constitution, intelligence, wisdom, charisma, inspiration, proficiency_bonus, passive_wisdom, saving_throw_strength, saving_throw_dexterity, saving_throw_constitution, saving_throw_intelligence, saving_throw_wisdom, saving_throw_charisma, acrobatics, animal_handling, arcana, athletics, deception, history, insight, intimidation, investigation, medicine, nature, perception, performance, persuasion, religion, sleight_of_hand, stealth, survival, armour_class, initiative, speed, hit_points, CP, SP, EP, GP, PP, personality_traits, ideals, bonds, flaws, attacks_and_spellcasting, other_proficiencies_and_languages, equipment, features_and_traits";
+
+const helpString = "These are all of the commands:\n\n? (lists all the commands)\n\ncreate <character_name> (creates a new character sheet.)\n\nlist attributes (lists all mutable attributes.)\n\n<character_name> <attribute> (shows the value of that character's attribute)\n\nset <character_name> <attribute> <value> (sets that character's attribute to that value.)";
 
 // object that is inserted into db
 var dbInsertObject = {};
@@ -42,13 +44,13 @@ var twilioSendMessage = function(message, req, res) {
 
 var twilioSendValue = async function(characterName, attribute, req, res) {
 	dbClient.callFunction("getValue", [characterName, attribute]).then(result => {
-		if (result == null) {
+		if (result === null) {
 			twilioSendMessage("Go to the DnDsheets website to create " + characterName + "!", req, res);
 		}
 		else if (!attributeSet.has(attribute)) {
 			twilioSendMessage(attribute + " is not a valid attribute. To see attributes text: list attributes", req, res);
 		}
-		else if (result[attribute] == "") {
+		else if (result[attribute] === "") {
 			twilioSendMessage("This attribute is not set for " + characterName + ".", req, res);
 		}
 		else {
@@ -64,7 +66,7 @@ var twilioUpdateValue = async function(characterName, attribute, value, req, res
 	else {
 		dbClient.callFunction("updateAttribute", [characterName, attribute, value]).then(result => {
 			console.log(result);
-			if (result.matchedCount == 0) {
+			if (result.matchedCount === 0) {
 				twilioSendMessage("Go to the DnDsheets website to create " + characterName + "!", req, res);
 			}
 			else {
@@ -89,25 +91,25 @@ app.post('/sms', (req, res) => {
 	var request = req.body.Body.toLowerCase().split(" ");
 	console.log(request);
 
-	if (request[0] == '?') {
-		
+	if (request[0] === '?') {
+		twilioSendMessage(helpString, req, res);
 	}
-	else if (request.length == 2 && request[0] == "create") {
+	else if (request.length === 2 && request[0] === "create") {
 		var characterName = request[1];
 		twilioCreateCharacter(characterName, req, res);
 	}
-	else if (request.length == 2 && request[0] == "list" && request[1] == "attributes") {
+	else if (request.length === 2 && request[0] === "list" && request[1] === "attributes") {
 		twilioSendMessage(attrbuteSetString, req, res);
 	}
-	else if (request.length == 2) {
+	else if (request.length === 2) {
 		var characterName = request[0];
 		var attribute = request[1];
 		twilioSendValue(characterName, attribute, req, res);
 	}
-	else if (request.length == 3) {
+	else if (request.length === 3) {
 		twilioSendMessage("Character names cannot contain spaces or any other white space. Use _ for spaces.", req, res);
 	}
-	else if (request.length >= 4 && request[0] == "set") {
+	else if (request.length >= 4 && request[0] === "set") {
 		var characterName = request[1];
 		var attribute = request[2];
 		var value = request.slice(3,request.length).join(' ');
@@ -120,7 +122,7 @@ app.post('/sms', (req, res) => {
 
 app.post('/receiveSMS', (req, res) => {
   console.log("Received request: /" + req.body.Body + "/");
-  if(req.body.Body.toLowerCase() == '?') {
+  if(req.body.Body.toLowerCase() === '?') {
     const twiml = new MessagingResponse();
     twiml.message('Available Commands:\n1. List Characters');
     res.writeHead(200, {'Content-Type': 'text/xml'});
@@ -156,9 +158,12 @@ app.post('/submitForm', (req, res) => {
   // let smallFieldJSON = JSON.parse(jsonData);
 
   for(var key in req.body) {
-  	var temp = key;
-  	temp.split(' ').join('_');
-  	dbInsertObject[temp] = req.body[temp];
+  	if (key === "character_name") {
+  		dbInsertObject[key] = req.body[key].split(' ').join('_').toLowerCase();
+  	}
+  	else {
+  		dbInsertObject[key] = req.body[key];
+  	}
   }
 
   dbClient.callFunction("createCharacter", [dbInsertObject]).then(result => {
