@@ -22,6 +22,8 @@ const attributeSet = new Set(["character_name", "class", "level", "background", 
    	"personality_traits", "ideals", "bonds", "flaws", "attacks_and_spellcasting", "other_proficiencies_and_languages", "equipment", "features_and_traits"
 ]);
 
+const attrbuteSetString = "character_name, class, level, background, player_name, race, alignment, strength, dexterity, constitution, intelligence, wisdom, charisma, inspiration, proficiency_bonus, passive_wisdom, saving_throw_strength, saving_throw_dexterity, saving_throw_constitution, saving_throw_intelligence, saving_throw_wisdom, saving_throw_charisma, acrobatics, animal_handling, arcana, athletics, deception, history, insight, intimidation, investigation, medicine, nature, perception, performance, persuasion, religion, sleight_of_hand, stealth, survival, armour_class, initiative, speed, hit_points, CP, SP, EP, GP, PP, personality_traits, ideals, bonds, flaws, attacks_and_spellcasting, other_proficiencies_and_languages, equipment, features_and_traits"
+
 // object that is inserted into db
 var dbInsertObject = {};
 
@@ -56,18 +58,28 @@ var twilioSendValue = async function(characterName, attribute, req, res) {
 }
 
 var twilioUpdateValue = async function(characterName, attribute, value, req, res) {
-	dbClient.callFunction("updateAttribute", [characterName, attribute, value]).then(result => {
-		console.log(result);
-		if (result.matchedCount == 0) {
-			twilioSendMessage("Go to the DnDsheets website to create " + characterName + "!", req, res);
-		}
-		else if (!attributeSet.has(attribute)) {
-			twilioSendMessage(attribute + " is not a valid attribute. To see attributes text: list attributes", req, res);
-		}
-		else {
-			twilioSendMessage("Update to " + characterName + " complete.", req, res);
-		}
-	});
+	if (!attributeSet.has(attribute)) {
+		twilioSendMessage(attribute + " is not a valid attribute. To see attributes text: list attributes", req, res);
+	}
+	else {
+		dbClient.callFunction("updateAttribute", [characterName, attribute, value]).then(result => {
+			console.log(result);
+			if (result.matchedCount == 0) {
+				twilioSendMessage("Go to the DnDsheets website to create " + characterName + "!", req, res);
+			}
+			else {
+				twilioSendMessage("Update to " + characterName + " complete.", req, res);
+			}
+		});
+	}
+}
+
+var twilioCreateCharacter = async function(characterName, req, res) {
+		var characterNameObject = {"character_name": characterName};
+		dbClient.callFunction("createCharacter", [characterNameObject]).then(result => {
+			console.log(result);
+			twilioSendMessage(characterName + " has been created!", req, res);
+		});
 }
 
 var client = new twilio(accountSid, authToken);
@@ -80,15 +92,25 @@ app.post('/sms', (req, res) => {
 	if (request[0] == '?') {
 		
 	}
+	else if (request.length == 2 && request[0] == "create") {
+		var characterName = request[1];
+		twilioCreateCharacter(characterName, req, res);
+	}
+	else if (request.length == 2 && request[0] == "list" && request[1] == "attributes") {
+		twilioSendMessage(attrbuteSetString, req, res);
+	}
 	else if (request.length == 2) {
 		var characterName = request[0];
 		var attribute = request[1];
 		twilioSendValue(characterName, attribute, req, res);
 	}
-	else if (request.length == 4 && request[0] == "set") {
+	else if (request.length == 3) {
+		twilioSendMessage("Character names cannot contain spaces or any other white space. Use _ for spaces.", req, res);
+	}
+	else if (request.length >= 4 && request[0] == "set") {
 		var characterName = request[1];
 		var attribute = request[2];
-		var value = request[3];
+		var value = request.slice(3,request.length).join(' ');
 		twilioUpdateValue(characterName, attribute, value, req, res);
 	}
 	else {
@@ -134,7 +156,9 @@ app.post('/submitForm', (req, res) => {
   // let smallFieldJSON = JSON.parse(jsonData);
 
   for(var key in req.body) {
-  	dbInsertObject[key] = req.body[key];
+  	var temp = key;
+  	temp.split(' ').join('_');
+  	dbInsertObject[temp] = req.body[temp];
   }
 
   dbClient.callFunction("createCharacter", [dbInsertObject]).then(result => {
