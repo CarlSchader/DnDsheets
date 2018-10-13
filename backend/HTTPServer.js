@@ -2,6 +2,7 @@ const express = require('express');
 const twilio = require('twilio');
 const MessagingResponse = twilio.twiml.MessagingResponse;
 const bodyParser = require('body-parser');
+const request = require('request');
 
 const {Stitch, AnonymousCredential} = require('mongodb-stitch-server-sdk');
 
@@ -28,10 +29,13 @@ var client = new twilio(accountSid, authToken);
 
 const dbClient = Stitch.initializeDefaultAppClient('dndsheets-lukpd');
 dbClient.auth.loginWithCredential(new AnonymousCredential()).then(user => {
-
-
-
+  // const mdb = dbClient.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas');
     // dbClient.close();
+
+  dbClient.callFunction("createCharacter", ["Hello world!"]).then(echoedResult => {
+  console.log(`Echoed result: ${echoedResult}`);
+})
+
 }).catch(err => {
     console.log(err);
     dbClient.close();
@@ -50,6 +54,8 @@ app.post('/receiveSMS', (req, res) => {
 });
 
 app.post('/submitForm', (req, res) => {
+
+
   res.send("Bye");
 });
 
