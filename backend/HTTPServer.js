@@ -28,7 +28,7 @@ var client = new twilio(accountSid, authToken);
 
 const dbClient = Stitch.initializeDefaultAppClient('dndsheets-lukpd');
 dbClient.auth.loginWithCredential(new AnonymousCredential()).then(user => {
-    console.log("Connected to DB");
+
 
 
     // dbClient.close();
