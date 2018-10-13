@@ -12,7 +12,7 @@ populateSmallFields = function(section, inputFields) {
                         rowFields = document.getElementById('characterSheets-row' + i + j)
                         for(var k = 0; k < section[i].row[j].length; k++)
                         {
-                              rowFields.innerHTML += '<div class="input-group mb-3 px-1" style="width: ' + section[i].row[j][k].fieldSize + '"><div class="input-group-prepend"><span class="input-group-text bg-dark text-light" id="inputGroup-sizing-sm">' +  section[i].row[j][k].fieldName + '</span></div><input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">'
+                              rowFields.innerHTML += '<div class="input-group mb-3 px-1" style="width: ' + section[i].row[j][k].fieldSize + '"><div class="input-group-prepend"><span class="input-group-text bg-dark text-light" id="inputGroup-sizing-sm">' +  section[i].row[j][k].fieldName + '</span></div><input id="' + section[i].row[j][k].idName + '" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">'
                         }
                   }
        }
