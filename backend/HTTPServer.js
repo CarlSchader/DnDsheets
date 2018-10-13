@@ -11,6 +11,9 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());       // to support JSON-encoded bodies
 
+// object that is inserted into db
+var dbInsertObject = {};
+
 // Twilio stuff
 var accountSid = 'AC9c1efaaec9f54b9372036591dd701f80'; // Your Account SID from www.twilio.com/console
 var authToken = 'e42e490ed559f0d61d30faa0c731136c';
@@ -50,10 +53,18 @@ app.post('/receiveSMS', (req, res) => {
 });
 
 app.post('/submitForm', (req, res) => {
+  // const fs = require('fs');
+  // let jsonData = fs.readFileSync('characterSheet.json');
+  // let smallFieldJSON = JSON.parse(jsonData);
+
   for(var key in req.body) {
-  	console.log(key + ' -> ' + "");
-  	console.log(req.body[key]);
+  	dbInsertObject[key] = req.body[key];
   }
+
+  // for(var key in req.body) {
+  // 	dbInsertObject[key] = req.body[key];
+  // }
+  console.log(dbInsertObject);
   res.send("Bye");
 });
 
