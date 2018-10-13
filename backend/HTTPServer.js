@@ -50,6 +50,10 @@ app.post('/receiveSMS', (req, res) => {
 });
 
 app.post('/submitForm', (req, res) => {
+  for(var key in req.body) {
+  	console.log(key + ' -> ' + "");
+  	console.log(req.body[key]);
+  }
   res.send("Bye");
 });
 
