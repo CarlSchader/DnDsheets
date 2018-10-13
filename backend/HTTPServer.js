@@ -9,6 +9,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());       // to support JSON-encoded bodies
 
 // Twilio stuff
 var accountSid = 'AC9c1efaaec9f54b9372036591dd701f80'; // Your Account SID from www.twilio.com/console
@@ -46,6 +47,10 @@ app.post('/receiveSMS', (req, res) => {
   } else {
     res.send("Bye");
   }
+});
+
+app.post('/submitForm', (req, res) => {
+  res.send("Bye");
 });
 
 app.get('/', (req, res) => {
