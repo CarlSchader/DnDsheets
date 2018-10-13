@@ -1,0 +1,265 @@
+{
+	"section": [
+		{
+			"name": "Character Name and Class",
+			"unusedFieldCount": "7",
+			"row": [
+				[
+					{
+						"fieldName": "Character Name",
+						"fieldSize": "300px"
+					},
+					{
+						"fieldName": "Class",
+						"fieldSize": "200px"
+					},
+					{
+						"fieldName": "Level",
+						"fieldSize": "125px"
+					},
+					{
+						"fieldName": "Background",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Player Name",
+						"fieldSize": "300px"
+					}
+				],
+				[
+					{
+						"fieldName": "Race",
+						"fieldSize": "200px"
+					},
+					{
+						"fieldName": "Alignment",
+						"fieldSize": "200px"
+					}
+				]
+			]
+		},
+		{
+			"name": "Stats",
+			"unusedFieldCount": "6",
+			"row": [
+				[
+					{
+						"fieldName": "Strength",
+						"fieldSize": "200px"
+					},
+					{
+						"fieldName": "Dexterity",
+						"fieldSize": "200px"
+					},
+					{
+						"fieldName": "Constitution",
+						"fieldSize": "200px"
+					},
+					{
+						"fieldName": "Intelligence",
+						"fieldSize": "200px"
+					},
+					{
+						"fieldName": "Wisdom",
+						"fieldSize": "200px"
+					},
+					{
+						"fieldName": "Charisma",
+						"fieldSize": "200px"
+					}
+				]
+			]
+		},
+		{
+			"name": "Inspiration, Proficiency Bonus, and Passive Wisdom",
+			"unusedFieldCount": "3",
+			"row": [
+				[
+					{
+						"fieldName": "Inspiration",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Proficiency Bonus",
+						"fieldSize": "300px"
+					},
+					{
+						"fieldName": "Passive Wisdom",
+						"fieldSize": "250px"
+					}
+				]
+			]
+		},
+		{
+			"name": "Saving Throws",
+			"unusedFieldCount": "6",
+			"row": [
+				[
+					{
+						"fieldName": "Strength",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Dexterity",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Constitution",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Intelligence",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Wisdom",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Charisma",
+						"fieldSize": "250px"
+					}
+				]
+			]
+		},
+		{
+			"name": "Skills",
+			"unusedFieldCount": "18",
+			"row": [
+				[
+					{
+						"fieldName": "Acrobatics",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Animal Handling",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Arcana",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Athletics",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Deception",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "History",
+						"fieldSize": "250px"
+					}
+				],
+				[
+					{
+						"fieldName": "Insight",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Intimidation",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Investigation",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Medicine",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Nature",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Perception",
+						"fieldSize": "250px"
+					}
+				],
+				[
+					{
+						"fieldName": "Performance",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Persuasion",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Religion",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Sleight of Hand",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Stealth",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Survival",
+						"fieldSize": "250px"
+					}
+				]
+			]
+		},
+		{
+			"name": "Combat Stats",
+			"unusedFieldCount": "4",
+			"row": [
+				[
+					{
+						"fieldName": "Armour Class",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Initiative",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Speed",
+						"fieldSize": "250px"
+					},
+					{
+						"fieldName": "Hit Points",
+						"fieldSize": "250px"
+					}
+				]
+			]
+		},
+		{
+			"name": "Equipment",
+			"unusedFieldCount": "5",
+			"row": [
+				[
+					{
+						"fieldName": "CP",
+						"fieldSize": "100px"
+					},
+					{
+						"fieldName": "SP",
+						"fieldSize": "100px"
+					},
+					{
+						"fieldName": "EP",
+						"fieldSize": "100px"
+					},
+					{
+						"fieldName": "GP",
+						"fieldSize": "100px"
+					},
+					{
+						"fieldName": "PP",
+						"fieldSize": "100px"
+					}
+				]
+			]
+		}
+	],
+	"forms": [
+		
+	]
+}
