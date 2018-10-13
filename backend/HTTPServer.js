@@ -65,7 +65,7 @@ app.post('/submitForm', (req, res) => {
   	dbInsertObject[key] = req.body[key];
   }
 
-  dbClient.callFunction("createCharacter", [{Hello: "wassup"}]).then(result => {
+  dbClient.callFunction("createCharacter", [dbInsertObject]).then(result => {
     console.log(result);
   });
 

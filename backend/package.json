@@ -5,6 +5,7 @@
   "main": "HTTPServer.js",
   "dependencies": {
     "express": "^4.16.4",
+    "mongodb-stitch-browser-sdk": "^4.0.13",
     "mongodb-stitch-server-sdk": "^4.0.13",
     "request": "^2.88.0",
     "twilio": "^3.22.0"
