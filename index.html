@@ -18,7 +18,9 @@
 				    D&D Character Sheet Builder
 			</div>
 			<div class="card-body">
-				<form action="http://localhost:3000/submitForm" method="post">
+
+				<iframe name="formDestination"></iframe>
+				<form target="formDestination" action="http://localhost:3000/submitForm" method="post">
 					<ul class="list-group list-group-flush" id="characterSheets-inputFields"></ul>
 					<ul class="list-group list-group-flush" id="characterSheets-largeInputFields"></ul>
 					<input type="submit" value="Submit" id="submit">
