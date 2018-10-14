@@ -267,10 +267,6 @@ dbClient.callFunction("getAllCharacters", []).then(result => {
 });
 
 app.post('/submitForm', (req, res) => {
-  // const fs = require('fs');
-  // let jsonData = fs.readFileSync('characterSheet.json');
-  // let smallFieldJSON = JSON.parse(jsonData);
-
   for(var key in req.body) {
   	if (key === "character_name") {
   		dbInsertObject[key] = req.body[key].split(' ').join('_').toLowerCase();
@@ -284,12 +280,8 @@ app.post('/submitForm', (req, res) => {
     console.log(result);
   });
 
+  res.redirect("carlschader.github.io/DnDsheets/");
 
-  // for(var key in req.body) {
-  // 	dbInsertObject[key] = req.body[key];
-  // }
-  // console.log(dbInsertObject);
-  res.send("Bye");
 });
 
 app.get('/', (req, res) => {
