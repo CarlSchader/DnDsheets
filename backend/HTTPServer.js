@@ -280,7 +280,7 @@ app.post('/submitForm', (req, res) => {
     console.log(result);
   });
 
-  res.redirect("https://carlschader.github.io/DnDsheets/");
+  res.redirect("https://carlschader.github.io/DnDsheets/index.html");
   // res.send("Worked!");
 
 });
