@@ -22,9 +22,69 @@ const attributeSet = new Set(["character_name", "class", "level", "background", 
    	"personality_traits", "ideals", "bonds", "flaws", "attacks_and_spellcasting", "other_proficiencies_and_languages", "equipment", "features_and_traits"
 ]);
 
+const characterObject = {
+	"character_name": "",
+    "class": "",
+    "level": "",
+    "background": "",
+    "player_name": "",
+    "race": "",
+    "alignment": "",
+    "strength": "",
+    "dexterity": "",
+    "constitution": "",
+    "intelligence": "",
+    "wisdom": "",
+    "charisma": "",
+    "inspiration": "",
+    "proficiency_bonus": "",
+    "passive_wisdom": "",
+    "saving_throw_strength": "",
+    "saving_throw_dexterity_": "",
+    "saving_throw_constitution": "",
+    "saving_throw_intelligence": "",
+    "saving_throw_wisdom": "",
+    "saving_throw_charisma": "",
+    "acrobatics": "",
+    "animal_handling": "",
+    "arcana": "",
+    "athletics": "",
+    "deception": "",
+    "history": "",
+    "insight": "",
+    "intimidation": "",
+    "investigation": "",
+    "medicine": "",
+    "nature": "",
+    "perception": "",
+    "performance": "",
+    "persuasion": "",
+    "religion": "",
+    "sleight_of_hand": "",
+    "stealth": "",
+    "survival": "",
+    "armour_class": "",
+    "initiative": "",
+    "speed": "",
+    "hit_points": "",
+    "CP": "",
+    "SP": "",
+    "EP": "",
+    "GP": "",
+    "PP": "",
+    "personality_traits": "",
+    "ideals": "",
+    "bonds": "",
+    "flaws": "",
+    "attacks_and_spellcasting": "",
+    "other_proficiencies_and_languages": "",
+    "equipment": "",
+    "features_and_traits": ""
+};
+
 const attrbuteSetString = "character_name, class, level, background, player_name, race, alignment, strength, dexterity, constitution, intelligence, wisdom, charisma, inspiration, proficiency_bonus, passive_wisdom, saving_throw_strength, saving_throw_dexterity, saving_throw_constitution, saving_throw_intelligence, saving_throw_wisdom, saving_throw_charisma, acrobatics, animal_handling, arcana, athletics, deception, history, insight, intimidation, investigation, medicine, nature, perception, performance, persuasion, religion, sleight_of_hand, stealth, survival, armour_class, initiative, speed, hit_points, CP, SP, EP, GP, PP, personality_traits, ideals, bonds, flaws, attacks_and_spellcasting, other_proficiencies_and_languages, equipment, features_and_traits";
 
-const helpString = "These are all of the commands:\n\n? (lists all the commands)\n\ncreate <character_name> (creates a new character sheet.)\n\nlist attributes (lists all mutable attributes.)\n\n<character_name> <attribute> (shows the value of that character's attribute)\n\nset <character_name> <attribute> <value> (sets that character's attribute to that value.)";
+const helpString = "These are all of the commands:\n\n? (lists all the commands)\n\nlist characters (lists all the character names)\n\n'character_name' sheet (lists all the attributes and values of a character.)\n\ncreate 'character_name' (creates a new character sheet.)\n\nlist attributes (lists all mutable attributes.)\n\n'character_name' 'attribute'   (shows the value of that character's attribute)\n\nset 'character_name' 'attribute' 'value' (sets that character's attribute to that value.)";
 
 // object that is inserted into db
 var dbInsertObject = {};
@@ -77,10 +137,30 @@ var twilioUpdateValue = async function(characterName, attribute, value, req, res
 }
 
 var twilioCreateCharacter = async function(characterName, req, res) {
-		var characterNameObject = {"character_name": characterName};
+		var characterNameObject = characterObject;
+		characterNameObject.character_name = characterName;
 		dbClient.callFunction("createCharacter", [characterNameObject]).then(result => {
 			console.log(result);
 			twilioSendMessage(characterName + " has been created!", req, res);
+		});
+}
+
+var twilioSendCharacterSheet = async function(characterName, req, res) {
+		// var characterNameObject = characterObject;
+		// characterNameObject.character_name = characterName;
+		dbClient.callFunction("getCharacterSheet", [characterName]).then(result => {
+			console.log(result);
+			if (result === null) {
+				twilioSendMessage("Character doesn't exist.", req, res);
+			}
+			else {
+				var temp = "";
+				for (var key in result) {
+					temp += key + ":     " + result[key]+'\n';
+				}
+				twilioSendMessage(temp, req, res);
+			}
+			return result;
 		});
 }
 
@@ -89,8 +169,8 @@ var populateCharacters = function(response) {
 }
 
 async function getAllCharacterNames(callback) {
-	dbClient.callFunction("getAllCharacterNames", []).then(result => {
-			console.log(result);
+	dbClient.callFunction("getAllCharacters", []).then(result => {
+			// console.log(result);
 			callback(result);
 			return result;
 		});
@@ -102,45 +182,50 @@ var client = new twilio(accountSid, authToken);
 var characters = [];
 // Actual event listener
 app.post('/sms', (req, res) => {
-	var request = req.body.Body.toLowerCase().split(" ");
+	var request = req.body.Body.trim().toLowerCase().split(" ");
+
 	console.log(request);
 
-	if (characters.length === 0) {
-		getAllCharacterNames(populateCharacters);
-	}
+	
 
-
+	getAllCharacterNames(populateCharacters);
 
 	if (request[0] === '?') {
 		twilioSendMessage(helpString, req, res);
 	}
-	else if (request.length === 2 && request[0] === "create") {
+	else if (request.length === 2 && request[0] === "create") { // Create character
 		var characterName = request[1];
 		twilioCreateCharacter(characterName, req, res);
 	}
-	else if (request.length === 2 && request[0] === "list" && request[1] === "attributes") {
+	else if (request.length === 2 && request[0] === "list" && request[1] === "attributes") { // list attributes
 		twilioSendMessage(attrbuteSetString, req, res);
 	}
-	else if (request.length === 2 && request[0] === "list" && request[1] === "characters") {
-		var temo = "";
-		// for (var name in characters)
-		twilioSendMessage("The number of characters is " + characters.length + ":\n" + JSON.stringify(characters), req, res);
+	else if (request.length === 2 && request[0] === "list" && request[1] === "characters") { // list characters
+		var temp = "";
+		for (var i =0; i<characters.length; i++) {
+			temp += (characters[i].character_name + "\n");
+		}
+		twilioSendMessage("The number of characters is " + characters.length + ":\n" + temp, req, res);
 	}
-	else if (request.length === 2) {
+	else if (request.length === 2 && request[1] === "sheet") {		// get character sheet
+		var characterName = request[0];
+		twilioSendCharacterSheet(characterName, req, res);
+	}
+	else if (request.length === 2) { 	// get attribute value
 		var characterName = request[0];
 		var attribute = request[1];
 		twilioSendValue(characterName, attribute, req, res);
 	}
-	else if (request.length === 3) {
+	else if (request.length === 3) {	// error for creating characters
 		twilioSendMessage("Character names cannot contain spaces or any other white space. Use _ for spaces.", req, res);
 	}
-	else if (request.length >= 4 && request[0] === "set") {
+	else if (request.length >= 4 && request[0] === "set") {	// set attributes
 		var characterName = request[1];
 		var attribute = request[2];
 		var value = request.slice(3,request.length).join(' ');
 		twilioUpdateValue(characterName, attribute, value, req, res);
 	}
-	else {
+	else {														// default error message
 		twilioSendValue("Command not recognized.", req, res);
 	}
 });
@@ -175,7 +260,11 @@ dbClient.auth.loginWithCredential(new AnonymousCredential()).then(user => {
     dbClient.close();
 })
 
-
+dbClient.callFunction("getAllCharacters", []).then(result => {
+	console.log(result);
+	characters = result;
+	return result;
+});
 
 app.post('/submitForm', (req, res) => {
   // const fs = require('fs');

@@ -114,32 +114,32 @@
 					{
 						"fieldName": "Strength",
 						"fieldSize": "250px",
-						"idName": "strength"
+						"idName": "saving_throw_strength"
 					},
 					{
 						"fieldName": "Dexterity",
 						"fieldSize": "250px",
-						"idName": "dexterity"
+						"idName": "saving_throw_dexterity_"
 					},
 					{
 						"fieldName": "Constitution",
 						"fieldSize": "250px",
-						"idName": "constitution"
+						"idName": "saving_throw_constitution"
 					},
 					{
 						"fieldName": "Intelligence",
 						"fieldSize": "250px",
-						"idName": "intelligence"
+						"idName": "saving_throw_intelligence"
 					},
 					{
 						"fieldName": "Wisdom",
 						"fieldSize": "250px",
-						"idName": "wisdom"
+						"idName": "saving_throw_wisdom"
 					},
 					{
 						"fieldName": "Charisma",
 						"fieldSize": "250px",
-						"idName": "charisma"
+						"idName": "saving_throw_charisma"
 					}
 				]
 			]
