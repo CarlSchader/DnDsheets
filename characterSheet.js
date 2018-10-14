@@ -53,8 +53,8 @@ xhttp2.onreadystatechange = function() {
     }
 };
 
-xhttp.open("GET", "https://carlschader.github.io/webApps/characterSheets/characterSheet.json", true);
+xhttp.open("GET", "https://carlschader.github.io/DnDsheets/characterSheet.json", true);
 xhttp.send();
 
-xhttp2.open("GET", "https://carlschader.github.io/webApps/characterSheets/largeFields.json", true);
+xhttp2.open("GET", "https://carlschader.github.io/DnDsheets/largeFields.json", true);
 xhttp2.send();
