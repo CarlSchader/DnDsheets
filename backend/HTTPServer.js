@@ -84,12 +84,32 @@ var twilioCreateCharacter = async function(characterName, req, res) {
 		});
 }
 
+var populateCharacters = function(response) {
+	characters = response;
+}
+
+async function getAllCharacterNames(callback) {
+	dbClient.callFunction("getAllCharacterNames", []).then(result => {
+			console.log(result);
+			callback(result);
+			return result;
+		});
+}
+
+
 var client = new twilio(accountSid, authToken);
 
+var characters = [];
 // Actual event listener
 app.post('/sms', (req, res) => {
 	var request = req.body.Body.toLowerCase().split(" ");
 	console.log(request);
+
+	if (characters.length === 0) {
+		getAllCharacterNames(populateCharacters);
+	}
+
+
 
 	if (request[0] === '?') {
 		twilioSendMessage(helpString, req, res);
@@ -100,6 +120,11 @@ app.post('/sms', (req, res) => {
 	}
 	else if (request.length === 2 && request[0] === "list" && request[1] === "attributes") {
 		twilioSendMessage(attrbuteSetString, req, res);
+	}
+	else if (request.length === 2 && request[0] === "list" && request[1] === "characters") {
+		var temo = "";
+		// for (var name in characters)
+		twilioSendMessage("The number of characters is " + characters.length + ":\n" + JSON.stringify(characters), req, res);
 	}
 	else if (request.length === 2) {
 		var characterName = request[0];
